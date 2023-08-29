@@ -4,12 +4,12 @@ pub mod message;
 pub mod task;
 
 #[cfg(test)]
-mod test{
+mod test {
     use crate::task::{AsstTaskParam, StartUpParams};
 
     #[test]
-    fn test_task_param(){
+    fn test_task_param() {
         let param = AsstTaskParam::StartUp(StartUpParams::default());
-        assert_eq!(param.get_type(),"StartUp")
+        assert_eq!(param.get_type(), "StartUp")
     }
 }

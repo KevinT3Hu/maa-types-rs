@@ -5,7 +5,7 @@ use serde_json::{json, Value};
 
 use super::taskchain::TaskChain;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub enum Task {
     StartButton2,
     MedicineConfirm,
@@ -31,7 +31,7 @@ pub enum Task {
     StartGameTask,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct ProcessTaskDetails {
     pub task: Task,
     pub action: i32,
@@ -40,6 +40,7 @@ pub struct ProcessTaskDetails {
     pub algorithm: i32,
 }
 
+#[derive(Debug)]
 pub enum SubTaskStatus {
     SubTaskError,
     SubTaskStart,
@@ -59,6 +60,7 @@ impl From<i32> for SubTaskStatus {
     }
 }
 
+#[derive(Debug)]
 pub enum SubTaskDetail {
     ProcessTask {
         status: SubTaskStatus,
@@ -82,14 +84,14 @@ impl SubTaskDetail {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StageDropsStage {
     pub stage_code: String,
     pub stage_id: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StageDropsStat {
     pub item_id: String,
@@ -98,30 +100,30 @@ pub struct StageDropsStat {
     pub add_quantity: i32,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct StageDropsDetail {
     pub stage: StageDropsStage,
     pub stars: i32,
     pub stats: Vec<StageDropsStat>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct RecruitTagsDetectedDetail {
     pub tags: Vec<String>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct RecruitSpecialTagDetail {
     pub tag: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct RecruitResultOperator {
     pub name: String,
     pub level: i32,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct RecruitResultItem {
     pub tags: Vec<String>,
     pub level: i32,
@@ -129,14 +131,14 @@ pub struct RecruitResultItem {
     pub operators: Vec<RecruitResultOperator>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct RecruitResultDetail {
     pub tags: Vec<String>,
     pub level: i32,
     pub result: Vec<RecruitResultItem>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct RecruitTagsRefreshedDetail {
     pub count: i32,
     pub refresh_limit: i32,
@@ -144,7 +146,7 @@ pub struct RecruitTagsRefreshedDetail {
 
 pub type RecruitTagsSelectedDetail = RecruitTagsDetectedDetail;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct EnterFacilityDetail {
     pub facility: String,
     pub index: i32,
@@ -152,57 +154,57 @@ pub struct EnterFacilityDetail {
 
 pub type NotEnoughStaffDetail = EnterFacilityDetail;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct ProductOfFacilityDetail {
     pub product: String,
     pub facility: String,
     pub index: i32,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct StageInfoDetail {
     pub name: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct PenguinIdDetail {
     pub id: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct DepotItem {
     pub id: String,
     pub have: i32,
     pub name: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct DepotArkPlannerObject {
     pub items: Vec<DepotItem>,
     #[serde(rename = "@type")]
     pub object_type: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct DepotArkPlanner {
     pub object: DepotArkPlannerObject,
     pub data: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct DepotLolicon {
     pub object: HashMap<String, i32>,
     pub data: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct DepotDetail {
     pub done: bool,
     pub arkplanner: DepotArkPlanner,
     pub lolicon: DepotLolicon,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct OperatorBoxAllItem {
     pub id: String,
     pub name: String,
@@ -210,7 +212,7 @@ pub struct OperatorBoxAllItem {
     pub rarity: i32,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct OperatorBoxOwnItem {
     pub id: String,
     pub name: String,
@@ -221,14 +223,14 @@ pub struct OperatorBoxOwnItem {
     pub rarity: i32,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct OperBoxDetail {
     pub done: bool,
     pub all_oper: Vec<OperatorBoxAllItem>,
     pub own_opes: Vec<OperatorBoxOwnItem>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 #[serde(tag = "what", content = "details")]
 pub enum SubTaskExtraInfoDetails {
     StageDrops(StageDropsDetail),
@@ -250,6 +252,7 @@ pub enum SubTaskExtraInfoDetails {
     UnsupportedLevel,
 }
 
+#[derive(Debug)]
 pub struct SubTaskExtraInfoDetail {
     pub taskchain: TaskChain,
     pub class: String,

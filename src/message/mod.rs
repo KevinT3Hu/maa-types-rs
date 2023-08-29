@@ -6,6 +6,7 @@ use detail::subtask::*;
 use detail::taskchain::*;
 use detail::*;
 
+#[derive(Debug)]
 pub enum AsstMessage {
     InternalError,
     InitFailed(InitFailedDetail),

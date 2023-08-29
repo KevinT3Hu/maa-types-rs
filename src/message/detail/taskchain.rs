@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use serde_json::Value;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub enum TaskChain {
     StartUp,
     CloseDown,
@@ -24,6 +24,7 @@ pub enum TaskChain {
 
 pub type TaskChainExtraInfoDetail = Value;
 
+#[derive(Debug)]
 pub enum TaskChainStatus {
     TaskChainError,
     TaskChainStart,
@@ -44,6 +45,7 @@ impl From<i32> for TaskChainStatus {
     }
 }
 
+#[derive(Debug)]
 pub struct TaskChainDetail {
     pub taskchain: TaskChain,
     pub uuid: String,

@@ -8,7 +8,7 @@ pub trait Param: Serialize {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub enum ClientType {
     Official,
     Bilibili,
@@ -19,7 +19,7 @@ pub enum ClientType {
     YoStarKR,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct StartUpParams {
     pub enable: bool,
     pub client_type: Option<ClientType>,
@@ -38,7 +38,7 @@ impl Default for StartUpParams {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct CloseDownParams {
     pub enable: bool,
 }
@@ -51,7 +51,7 @@ impl Default for CloseDownParams {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub enum Server {
     CN,
     US,
@@ -59,7 +59,7 @@ pub enum Server {
     KR,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct FightParams {
     pub enable: bool,
     pub stage: Option<String>,
@@ -97,7 +97,7 @@ impl Default for FightParams {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct RecruitParams {
     pub enable: bool,
     pub refresh: bool,
@@ -146,7 +146,7 @@ impl Default for RecruitParams {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub enum InfrastFacility {
     Mfg,
     Trade,
@@ -157,7 +157,7 @@ pub enum InfrastFacility {
     Dorm,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub enum DronesUsage {
     _NotUse,
     Money,
@@ -168,7 +168,7 @@ pub enum DronesUsage {
     Chip,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct InfrastParams {
     pub enable: bool,
     pub mode: i32,
@@ -209,7 +209,7 @@ impl Default for InfrastParams {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct MallParams {
     pub enable: bool,
     pub shopping: bool,
@@ -234,7 +234,7 @@ impl Default for MallParams {
 
 pub type AwardParams = CloseDownParams;
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct RoguelikeParams {
     pub enable: bool,
     pub theme: Option<String>,
