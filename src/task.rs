@@ -275,6 +275,7 @@ impl Default for RoguelikeParams {
 
 macro_rules! asst_task_param {
     ($($enumvariant: ident($content: ty),)*) => {
+        #[derive(Debug)]
         pub enum AsstTaskParam {
             $($enumvariant($content),)*
         }
