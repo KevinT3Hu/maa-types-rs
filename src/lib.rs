@@ -10,6 +10,6 @@ mod test {
     #[test]
     fn test_task_param() {
         let param = AsstTaskParam::StartUp(StartUpParams::default());
-        assert_eq!(param.get_type(), "StartUp")
+        assert_eq!(param.name(), "StartUp")
     }
 }
