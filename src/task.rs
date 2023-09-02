@@ -282,15 +282,21 @@ macro_rules! asst_task_param {
 
         impl AsstTaskParam {
 
-            pub fn get_type(&self) -> String {
+            pub fn name(&self) -> String {
                 match self {
                     $(AsstTaskParam::$enumvariant(..) => stringify!($enumvariant).to_string(),)*
                 }
             }
 
-            pub fn get_param(&self) -> String {
+            pub fn param(&self) -> String {
                 match self {
                     $(AsstTaskParam::$enumvariant(content) => content.json(),)*
+                }
+            }
+
+            pub fn enabled(&self) -> bool {
+                match self {
+                    $(AsstTaskParam::$enumvariant(content) => content.enable,)*
                 }
             }
         }
