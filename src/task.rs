@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_default::DefaultFromSerde;
 
 pub trait Param: Serialize {
     fn json(&self) -> String {
@@ -8,7 +9,7 @@ pub trait Param: Serialize {
     }
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum ClientType {
     Official,
     Bilibili,
@@ -19,39 +20,36 @@ pub enum ClientType {
     YoStarKR,
 }
 
-#[derive(Serialize, Debug)]
+// This is something silly right now, a workaround for serde default value which only supports using a function
+fn def_true() -> bool {
+    true
+}
+
+fn def_i32_max() -> i32 {
+    i32::MAX
+}
+
+#[derive(Serialize, Deserialize, Debug, DefaultFromSerde)]
 pub struct StartUpParams {
+    #[serde(default = "def_true")]
     pub enable: bool,
+    #[serde(default)]
     pub client_type: Option<ClientType>,
+    #[serde(default)]
     pub start_game_enabled: bool,
 }
 
 impl Param for StartUpParams {}
 
-impl Default for StartUpParams {
-    fn default() -> Self {
-        StartUpParams {
-            enable: true,
-            client_type: None,
-            start_game_enabled: false,
-        }
-    }
-}
-
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, DefaultFromSerde)]
 pub struct CloseDownParams {
+    #[serde(default = "def_true")]
     pub enable: bool,
 }
 
 impl Param for CloseDownParams {}
 
-impl Default for CloseDownParams {
-    fn default() -> Self {
-        CloseDownParams { enable: true }
-    }
-}
-
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum Server {
     CN,
     US,
@@ -59,94 +57,84 @@ pub enum Server {
     KR,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, DefaultFromSerde)]
 pub struct FightParams {
+    #[serde(default = "def_true")]
     pub enable: bool,
+    #[serde(default)]
     pub stage: Option<String>,
+    #[serde(default)]
     pub medicine: i32,
+    #[serde(default)]
     pub expiring_medicine: i32,
+    #[serde(default)]
     pub stone: i32,
+    #[serde(default = "def_i32_max")]
     pub times: i32,
+    #[serde(default)]
     pub drops: HashMap<String, i32>,
+    #[serde(default)]
     pub report_to_penguin: bool,
+    #[serde(default)]
     pub penguin_id: Option<String>,
+    #[serde(default)]
     pub server: Option<Server>,
+    #[serde(default)]
     pub client_type: Option<ClientType>,
     #[serde(rename = "DrGrandet")]
+    #[serde(default)]
     pub dr_grandet: bool,
 }
 
 impl Param for FightParams {}
 
-impl Default for FightParams {
-    fn default() -> Self {
-        FightParams {
-            enable: true,
-            stage: None,
-            medicine: 0,
-            expiring_medicine: 0,
-            stone: 0,
-            times: i32::MAX,
-            drops: HashMap::new(),
-            report_to_penguin: false,
-            penguin_id: None,
-            server: None,
-            client_type: None,
-            dr_grandet: false,
-        }
+fn def_rec_time() -> HashMap<String, i32> {
+    let mut rec_time: HashMap<String, i32> = HashMap::new();
+
+    for i in 3..=6 {
+        rec_time.insert(format!("{}", i), 540);
     }
+
+    rec_time
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, DefaultFromSerde)]
 pub struct RecruitParams {
+    #[serde(default = "def_true")]
     pub enable: bool,
+    #[serde(default)]
     pub refresh: bool,
+    #[serde(default)]
     pub select: Vec<i32>,
+    #[serde(default)]
     pub confirm: Vec<i32>,
+    #[serde(default)]
     pub times: i32,
+    #[serde(default = "def_true")]
     pub set_time: bool,
+    #[serde(default)]
     pub expedite: bool,
+    #[serde(default = "def_i32_max")]
     pub expedite_times: i32,
+    #[serde(default = "def_true")]
     pub skip_robot: bool,
+    #[serde(default = "def_rec_time")]
     pub recruitment_time: HashMap<String, i32>,
+    #[serde(default)]
     pub report_to_penguin: bool,
+    #[serde(default)]
     pub penguin_id: Option<String>,
+    #[serde(default)]
     pub report_to_yituliu: bool,
+    #[serde(default)]
     pub yituliu_id: Option<String>,
+    #[serde(default)]
     pub server: Option<Server>,
 }
 
 impl Param for RecruitParams {}
 
-impl Default for RecruitParams {
-    fn default() -> Self {
-        let mut rec_time: HashMap<String, i32> = HashMap::new();
-
-        for i in 3..=6 {
-            rec_time.insert(format!("{}", i), 540);
-        }
-
-        RecruitParams {
-            enable: true,
-            refresh: false,
-            select: Vec::new(),
-            confirm: Vec::new(),
-            times: 0,
-            set_time: true,
-            expedite: false,
-            expedite_times: i32::MAX,
-            skip_robot: true,
-            recruitment_time: rec_time,
-            report_to_penguin: false,
-            penguin_id: None,
-            report_to_yituliu: false,
-            yituliu_id: None,
-            server: None,
-        }
-    }
-}
-
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum InfrastFacility {
     Mfg,
     Trade,
@@ -157,7 +145,7 @@ pub enum InfrastFacility {
     Dorm,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum DronesUsage {
     _NotUse,
     Money,
@@ -168,110 +156,103 @@ pub enum DronesUsage {
     Chip,
 }
 
-#[derive(Serialize, Debug)]
+impl Default for DronesUsage {
+    fn default() -> Self {
+        DronesUsage::_NotUse
+    }
+}
+
+fn def_facility() -> Vec<InfrastFacility> {
+    vec![
+        InfrastFacility::Mfg,
+        InfrastFacility::Trade,
+        InfrastFacility::Power,
+        InfrastFacility::Control,
+        InfrastFacility::Reception,
+        InfrastFacility::Office,
+        InfrastFacility::Dorm,
+    ]
+}
+
+fn def_threshold() -> f64 {
+    0.3
+}
+
+#[derive(Serialize, Deserialize, Debug, DefaultFromSerde)]
 pub struct InfrastParams {
+    #[serde(default = "def_true")]
     pub enable: bool,
+    #[serde(default)]
     pub mode: i32,
+    #[serde(default = "def_facility")]
     pub facility: Vec<InfrastFacility>,
+    #[serde(default)]
     pub drones: DronesUsage,
+    #[serde(default = "def_threshold")]
     pub threshold: f64,
+    #[serde(default)]
     pub replenish: bool,
+    #[serde(default)]
     pub dorm_notstationed_enabled: bool,
+    #[serde(default)]
     pub dorm_trust_enabled: bool,
+    #[serde(default)]
     pub filename: Option<String>,
+    #[serde(default)]
     pub plan_index: Option<i32>,
 }
 
 impl Param for InfrastParams {}
 
-impl Default for InfrastParams {
-    fn default() -> Self {
-        InfrastParams {
-            enable: true,
-            mode: 0,
-            facility: vec![
-                InfrastFacility::Mfg,
-                InfrastFacility::Trade,
-                InfrastFacility::Power,
-                InfrastFacility::Control,
-                InfrastFacility::Reception,
-                InfrastFacility::Office,
-                InfrastFacility::Dorm,
-            ],
-            drones: DronesUsage::_NotUse,
-            threshold: 0.3,
-            replenish: false,
-            dorm_notstationed_enabled: false,
-            dorm_trust_enabled: false,
-            filename: None,
-            plan_index: None,
-        }
-    }
-}
-
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, DefaultFromSerde)]
 pub struct MallParams {
+    #[serde(default = "def_true")]
     pub enable: bool,
+    #[serde(default)]
     pub shopping: bool,
+    #[serde(default)]
     pub buy_first: Option<Vec<String>>,
+    #[serde(default)]
     pub blacklist: Option<Vec<String>>,
+    #[serde(default = "def_true")]
     pub force_shopping_if_credit_full: bool,
 }
 
 impl Param for MallParams {}
 
-impl Default for MallParams {
-    fn default() -> Self {
-        MallParams {
-            enable: true,
-            shopping: false,
-            buy_first: None,
-            blacklist: None,
-            force_shopping_if_credit_full: true,
-        }
-    }
-}
-
 pub type AwardParams = CloseDownParams;
 
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, DefaultFromSerde)]
 pub struct RoguelikeParams {
+    #[serde(default = "def_true")]
     pub enable: bool,
+    #[serde(default)]
     pub theme: Option<String>,
+    #[serde(default)]
     pub mode: i32,
+    #[serde(default = "def_i32_max")]
     pub starts_count: i32,
+    #[serde(default = "def_true")]
     pub investment_enabled: bool,
+    #[serde(default = "def_i32_max")]
     pub investments_count: i32,
+    #[serde(default)]
     pub stop_when_investment_full: bool,
+    #[serde(default)]
     pub squad: Option<String>,
+    #[serde(default)]
     pub roles: Option<String>,
+    #[serde(default)]
     pub core_char: Option<String>,
+    #[serde(default)]
     pub use_support: bool,
+    #[serde(default)]
     pub use_nonfriend_support: bool,
+    #[serde(default)]
     pub refresh_trader_with_dice: bool,
 }
 
 impl Param for RoguelikeParams {}
-
-impl Default for RoguelikeParams {
-    fn default() -> Self {
-        RoguelikeParams {
-            enable: true,
-            theme: None,
-            mode: 0,
-            starts_count: i32::MAX,
-            investment_enabled: true,
-            investments_count: i32::MAX,
-            stop_when_investment_full: false,
-            squad: None,
-            roles: None,
-            core_char: None,
-            use_support: false,
-            use_nonfriend_support: false,
-            refresh_trader_with_dice: false,
-        }
-    }
-}
 
 macro_rules! asst_task_param {
     ($($enumvariant: ident($content: ty),)*) => {
