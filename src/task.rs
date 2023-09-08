@@ -256,6 +256,17 @@ impl Param for RoguelikeParams {}
 
 macro_rules! asst_task_param {
     ($($enumvariant: ident($content: ty),)*) => {
+        /// AsstTaskParam is a enum that contains all the task parameters
+        /// 
+        /// All the task parameters implement [Param](Param) and [Default](std::default::Default) trait
+        /// 
+        /// Example:
+        /// ```
+        /// use maa_types::task::AsstTaskParam;
+        /// use maa_types::task::StartUpParams;
+        /// 
+        /// let startup = AsstTaskParam::StartUp(StartUpParams::default());
+        /// assert_eq!(startup.name(), "StartUp");
         #[derive(Debug)]
         pub enum AsstTaskParam {
             $($enumvariant($content),)*
@@ -263,18 +274,21 @@ macro_rules! asst_task_param {
 
         impl AsstTaskParam {
 
+            /// Return the name of the task parameter
             pub fn name(&self) -> String {
                 match self {
                     $(AsstTaskParam::$enumvariant(..) => stringify!($enumvariant).to_string(),)*
                 }
             }
 
+            /// Return the json string of the task parameter
             pub fn param(&self) -> String {
                 match self {
                     $(AsstTaskParam::$enumvariant(content) => content.json(),)*
                 }
             }
 
+            /// Return whether the task parameter is enabled
             pub fn enabled(&self) -> bool {
                 match self {
                     $(AsstTaskParam::$enumvariant(content) => content.enable,)*

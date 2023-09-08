@@ -6,6 +6,26 @@ use detail::subtask::*;
 use detail::taskchain::*;
 use detail::*;
 
+/// Enum for all messages sent by MaaCore
+/// 
+/// # Usage
+/// 
+/// You get a msg code and a json string from MaaCore, then you can use `AsstMessage::get` to get an `AsstMessage` instance.
+/// 
+/// # Example
+/// 
+/// ```
+/// use maa_types::message::AsstMessage;
+/// 
+/// let msg = 0;
+/// let details = r#"{}"#;
+/// let asst_msg = AsstMessage::get(msg, details).unwrap();
+/// 
+/// if let AsstMessage::InternalError = asst_msg {
+///    assert!(true);
+/// } else {
+///   assert!(false);
+/// }
 #[derive(Debug)]
 pub enum AsstMessage {
     InternalError,
