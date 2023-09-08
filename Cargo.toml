@@ -2,6 +2,11 @@
 name = "maa_types"
 version = "0.3.0"
 edition = "2021"
+license-file = "LICENSE"
+description = "Types for the Maa."
+repository = "https://github.com/KevinT3Hu/maa_types"
+homepage = "https://github.com/KevinT3Hu/maa_types"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
