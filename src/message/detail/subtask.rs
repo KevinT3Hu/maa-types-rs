@@ -8,6 +8,9 @@ use super::taskchain::TaskChain;
 #[derive(Deserialize, Debug)]
 pub enum Task {
     StartButton2,
+    AutoRecruitTask,
+    RecognizeDrops,
+    CheckStageValid,
     MedicineConfirm,
     StoneConfirm,
     RecruitRefreshConfirm,
