@@ -1,5 +1,9 @@
+use std::fmt::Formatter;
+use std::fmt::Display;
 use serde::Deserialize;
 use serde_json::Value;
+
+use crate::enum_display;
 
 #[derive(Deserialize, Debug)]
 pub enum TaskChain {
@@ -22,6 +26,27 @@ pub enum TaskChain {
     Debug,
 }
 
+enum_display!(
+    TaskChain,
+    StartUp,
+    CloseDown,
+    Fight,
+    Mall,
+    Recruit,
+    Infrast,
+    Award,
+    Roguelike,
+    Copilot,
+    SSSCopilot,
+    Depot,
+    OperBox,
+    ReclamationAlgorithm,
+    Custom,
+    SingleStep,
+    VideoRecognition,
+    Debug
+);
+
 pub type TaskChainExtraInfoDetail = Value;
 
 #[derive(Debug)]
@@ -32,6 +57,15 @@ pub enum TaskChainStatus {
     TaskChainExtraInfo,
     TaskChainStopped,
 }
+
+enum_display!(
+    TaskChainStatus,
+    TaskChainError,
+    TaskChainStart,
+    TaskChainCompleted,
+    TaskChainExtraInfo,
+    TaskChainStopped
+);
 
 impl From<i32> for TaskChainStatus {
     fn from(value: i32) -> Self {

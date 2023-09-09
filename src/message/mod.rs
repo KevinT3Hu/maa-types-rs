@@ -6,6 +6,21 @@ use detail::subtask::*;
 use detail::taskchain::*;
 use detail::*;
 
+#[macro_export(local_inner_macros)]
+macro_rules! enum_display {
+    ($enum_name:ident,$($variant:ident),*) => {
+        impl Display for $enum_name {
+            fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+                match self {
+                    $(
+                        $enum_name::$variant => std::write!(f, std::stringify!($variant)),
+                    )*
+                }
+            }
+        }
+    };
+}
+
 /// Enum for all messages sent by MaaCore
 /// 
 /// # Usage
